@@ -1,5 +1,7 @@
 package com.example.tentissimo;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.example.tentissimo.Productos.Empanada;
 import com.example.tentissimo.Productos.Pizza;
 import com.example.tentissimo.Productos.Producto;
@@ -14,13 +16,23 @@ import java.util.Set;
 public class Stock {
     private static Stock instance=new Stock();
     private Map<String,Map<Producto,Integer>> stock;
+    private DataBaseHelper dataBase;
 
 
-    private Stock(){
-        stock= new HashMap<String,Map<Producto,Integer>>();
+    private Stock() {
+        stock = new HashMap<String, Map<Producto, Integer>>();
         añadirProductos("Empanada Comun");
         añadirProductos("Empanada Especial");
         añadirProductos("Pizza");
+        añadirProductos("Sandwich");
+    }
+
+    public void setDAtaBase(DataBaseHelper db){
+        dataBase=db;
+        dataBase.getEmpanadasComunes(stock.get("Empanada Comun"));
+        dataBase.getEmpanadasEspeciales(stock.get("Empanada Especial"));
+        dataBase.getPizzas(stock.get("Pizza"));
+        dataBase.getSandwiches(stock.get("Sandwich"));
     }
 
     public static Stock getInstance() {
@@ -28,12 +40,17 @@ public class Stock {
     }
 
     public void añadirStockProducto(String tipo,String producto, int cant){
-        Map<Producto,Integer> stockProdcuto=stock.get(tipo);
-            stockProdcuto.put(getProducto(tipo, producto),stockProdcuto.get(getProducto(tipo, producto))+cant);
+        Map<Producto,Integer> stockProducto=stock.get(tipo);
+        Producto p=getProducto(tipo,producto);
+        int actual=stockProducto.get(p);
+        stockProducto.put(p,actual+cant);
+        p.update(dataBase.escritura(),actual+cant);
     }
 
-    public void añadirNuevoProducto(Producto p, int cant){
-        stock.get(p.getTipo()).put(p,cant);
+    public void añadirNuevoProducto(String tipo,Producto p, int cant){
+        stock.get(tipo).put(p,cant);
+       // p.update(dataBase.escritura(),cant);
+        p.insert(dataBase.escritura(),cant);
     }
 
     public int getCantidadProdcuto(String tipo, String producto){
@@ -56,7 +73,7 @@ public class Stock {
         stock.put(tipo,new HashMap<Producto, Integer>());
     }
 
-    private Producto getProducto(String tipo,String producto){
+    public Producto getProducto(String tipo,String producto){
         Map<Producto,Integer> stockProdcuto=stock.get(tipo);
         Iterator<Producto> iterador=stockProdcuto.keySet().iterator();
         Producto p;
@@ -71,6 +88,13 @@ public class Stock {
 
     public boolean estaProducto(String tipo,String nombre){
         return getProducto(tipo,nombre)!=null;
+    }
+
+    public void eliminarProducto(String tipo,String nombre){
+        Map<Producto,Integer> stockProducto=stock.get(tipo);
+        Producto p=getProducto(tipo,nombre);
+        stockProducto.remove(p);
+       p.delete(dataBase.escritura());
     }
 }
 

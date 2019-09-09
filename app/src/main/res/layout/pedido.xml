@@ -6,24 +6,41 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/DescPedido"
+                    android:layout_width="310dp"
+                    android:layout_height="43dp"
+                    android:text="Pedido #12"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/precioPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:layout_weight="1"
+                    android:text="$1500"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/Direccion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Direccion"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-            <TextView
-                android:id="@+id/Descripcion"
-                android:layout_width="match_parent"
-                android:layout_height="47dp"
+                android:layout_height="32dp"
                 android:text="Descripcion" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

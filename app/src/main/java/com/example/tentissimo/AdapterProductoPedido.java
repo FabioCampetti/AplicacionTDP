@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,13 +25,17 @@ public class AdapterProductoPedido extends RecyclerView.Adapter<AdapterProductoP
     private String producto;
     private View.OnClickListener sumar;
     private View.OnClickListener restar;
+    private TextView cantidadProductos;
+    private TextView totalPrecio;
 
-    public AdapterProductoPedido(String producto,Map<String,Map<String,Integer>> productosElegidos,Context context){
+    public AdapterProductoPedido(String producto,Map<String,Map<String,Integer>> productosElegidos,Context context,TextView cantidad,TextView total){
         this.context = context;
         this.producto = producto;
         this.productosElegidos=productosElegidos;
         productos=stock.getStockProducto(producto);
         listaProductos=(ArrayList<Producto>) stock.getListaStockProducto(producto);
+        cantidadProductos=cantidad;
+        totalPrecio=total;
     }
 
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType){
@@ -41,17 +46,43 @@ public class AdapterProductoPedido extends RecyclerView.Adapter<AdapterProductoP
 
     @Override
     public void onBindViewHolder (@NonNull ViewHolder holder, int position) {
-        Producto p = listaProductos.get(position);
-        String prodEspecifico = p.getNombre();
+        final Producto p = listaProductos.get(position);
+        final String prodEspecifico = p.getNombre();
         holder.getProducto().setText(prodEspecifico);
         holder.getCantidad().setText(String.valueOf(productosElegidos.get(producto).get(prodEspecifico)));
-        holder.getRestar().setOnClickListener(restar);
-        holder.getSumar().setOnClickListener(sumar);
+        holder.getRestar().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(productosElegidos.get(producto).get(prodEspecifico)>0)
+                {productosElegidos.get(producto).put(prodEspecifico,productosElegidos.get(producto).get(prodEspecifico)-1);
+                notifyDataSetChanged();
+                int newCant=Integer.parseInt(cantidadProductos.getText().toString());
+                newCant--;
+                cantidadProductos.setText(newCant+"");
+                int precio=Integer.parseInt(totalPrecio.getText().toString());
+                precio-=p.getPrecio();
+                totalPrecio.setText(precio+"");}
+            }
+        });
+        holder.getSumar().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stock.getCantidadProdcuto(producto,prodEspecifico)>productosElegidos.get(producto).get(prodEspecifico))
+                {productosElegidos.get(producto).put(prodEspecifico,productosElegidos.get(producto).get(prodEspecifico)+1);
+                notifyDataSetChanged();
+                int newCant=Integer.parseInt(cantidadProductos.getText().toString());
+                newCant++;
+                cantidadProductos.setText(newCant+"");
+                int precio=Integer.parseInt(totalPrecio.getText().toString());
+                precio+=p.getPrecio();
+                totalPrecio.setText(precio+"");}
+                else
+                    Toast.makeText(context,"Stock Insuficiente", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-    public void aumentar(View view){
-        TextView nombre= (TextView) view.findViewById(R.id.Cantidad);
-        TextView cant= (TextView) view.findViewById(R.id.Cantidad);
 
+    public void sumar(ViewHolder view){
 
     }
 

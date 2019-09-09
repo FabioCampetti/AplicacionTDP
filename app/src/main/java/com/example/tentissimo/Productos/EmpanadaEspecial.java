@@ -1,10 +1,12 @@
 package com.example.tentissimo.Productos;
 
+import com.example.tentissimo.DataBaseHelper;
+
 public class EmpanadaEspecial extends Empanada {
+    private static final String TABLA_EMPANADAE="empanadasEspeciales";
 
     public EmpanadaEspecial(String nombre){
         setNombre(nombre);
-        setTipo("Empanada Especial");
     }
 
     public int getPrecio(){
@@ -16,4 +18,9 @@ public class EmpanadaEspecial extends Empanada {
         e.setIngredientes(getIngredientes());
         return e;
     }
+
+    public String getTabla(){
+        return TABLA_EMPANADAE;
+    }
+
 }

@@ -26,5 +26,11 @@
         </activity>
         <activity android:name=".Activitys.NewPedidoActivity">
         </activity>
+        <activity android:name=".Activitys.DatosNewPedidoActivity">
+        </activity>
+        <activity android:name=".Activitys.DatosPedidoActivity">
+        </activity>
+        <activity android:name=".Activitys.InfoActivity">
+        </activity>
     </application>
 </manifest>

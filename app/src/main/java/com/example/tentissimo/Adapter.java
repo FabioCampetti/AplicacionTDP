@@ -1,5 +1,7 @@
 package com.example.tentissimo;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +9,9 @@ import android.widget.TextView;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tentissimo.Activitys.DatosPedidoActivity;
+import com.example.tentissimo.Activitys.PedidosActivity;
 
 import java.util.ArrayList;
 
@@ -27,9 +32,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Pedido pedido= lista.get(position);
-        holder.getDescripcion().setText(pedido.getDescripcion());
+        final Pedido pedido= lista.get(position);
+        final int pos=position;
+        holder.getDescPedido().setText("Pedido #"+pedido.getCodigo());
+        holder.getPrecioPedido().setText("$"+pedido.getPrecio());
         holder.getDireccion().setText(pedido.getDireccion());
+        holder.getDescPedido().setBackgroundColor(Color.parseColor(pedido.getColor()));
+        holder.getPrecioPedido().setBackgroundColor(Color.parseColor(pedido.getColor()));
+        holder.getDireccion().setBackgroundColor(Color.parseColor(pedido.getColor()));
+        holder.getDescPedido().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(context, DatosPedidoActivity.class);
+                intent.putExtra("codPedido",pedido.getCodigo());
+                notifyItemChanged(pos);
+                context.startActivity(intent);
+
+            }
+        });
     }
 
     @Override
@@ -37,21 +57,27 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return lista.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView Direccion;
-        private TextView Descripcion;
+        private TextView descPedido;
+        private TextView precioPedido;
         public ViewHolder(View itemView){
             super(itemView);
-            Direccion=(TextView) itemView.findViewById(R.id.Descripcion);
-            Descripcion=(TextView) itemView.findViewById(R.id.Direccion);
+            Direccion=(TextView) itemView.findViewById(R.id.Direccion);
+            precioPedido=(TextView) itemView.findViewById(R.id.precioPedido);
+            descPedido=(TextView) itemView.findViewById(R.id.DescPedido);
         }
 
         public TextView getDireccion(){
             return Direccion;
         }
 
-        public TextView getDescripcion() {
-            return Descripcion;
+        public TextView getPrecioPedido() {
+            return precioPedido;
         }
+
+        public TextView getDescPedido(){ return descPedido;}
+
     }
 }

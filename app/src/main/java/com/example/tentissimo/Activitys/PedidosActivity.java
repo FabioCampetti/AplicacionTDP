@@ -27,5 +27,15 @@ public class PedidosActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new Adapter(pedidos.getPedidos(),this);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    protected void onStart(){
+        super.onStart();
+        adapter.notifyDataSetChanged();
+    }
+
+    public RecyclerView getRecyclerView(){
+        return recyclerView;
     }
 }

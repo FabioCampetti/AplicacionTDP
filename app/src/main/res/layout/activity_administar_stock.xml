@@ -16,7 +16,7 @@
         android:layout_height="74dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text=""
+        android:hint="Nombre"
         android:textSize="30sp" />
 
     <EditText
@@ -25,7 +25,16 @@
         android:layout_height="66dp"
         android:ems="10"
         android:inputType="number"
-        android:text=""
+        android:hint="Cantidad"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/Precio"
+        android:layout_width="288dp"
+        android:layout_height="66dp"
+        android:ems="10"
+        android:hint="Precio"
+        android:inputType="number"
         android:textSize="30sp" />
 
     <Button
@@ -34,4 +43,18 @@
         android:layout_height="81dp"
         android:onClick="agregar"
         android:text="Agregar" />
+
+    <Button
+        android:id="@+id/Decrementar"
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:onClick="decrementar"
+        android:text="DECREMENTAR STOCK" />
+
+    <Button
+        android:id="@+id/Eliminar"
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:onClick="eliminar"
+        android:text="ELIMINAR" />
 </LinearLayout>
